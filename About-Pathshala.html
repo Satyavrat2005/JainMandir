@@ -33,111 +33,8 @@
 
 
     <!-- Levels Section -->
-    <div class="level-section">
-        <div class="level">
-            <div class="level-detail">
-                <div class="level-number">
-                    <h3>
-                        Level 1
-                    </h3>
-                    <p>
-                        5-7 years
-                    </p>
-    
-                </div>
-                 <h2>
-                    Foundation Level
-                </h2>
-                <p class="level-detail-p">Introduction to Jain Principles and basic Prayers</p>
-                <div class="img-detail">
-                    <img src="https://jpeg.org/images/jpeg-home.jpg" alt="">
-                    <p>Image of Level 1</p>
-                </div>
-                <div class="img-detail">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQKAOpO3uaqpXpZGD3C1yXx2Tq2lvzEA507A&s" alt="">
-                    <p>Image of Level 1</p>
-                </div>
-                <button class="level-button"> View Details</button>
-            </div>
-        </div>
-        <div class="level">
-            <div class="level-detail">
-                <div class="level-number">
-                    <h3>
-                        Level 1
-                    </h3>
-                    <p>
-                        5-7 years
-                    </p>
-    
-                </div>
-                 <h2>
-                    Foundation Level
-                </h2>
-                <p class="level-detail-p">Introduction to Jain Principles and basic Prayers</p>
-                <div class="img-detail">
-                    <img src="https://jpeg.org/images/jpeg-home.jpg" alt="">
-                    <p>Image of Level 1</p>
-                </div>
-                <div class="img-detail">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQKAOpO3uaqpXpZGD3C1yXx2Tq2lvzEA507A&s" alt="">
-                    <p>Image of Level 1</p>
-                </div>
-                <button class="level-button"> View Details</button>
-            </div>
-        </div>
-        <div class="level">
-            <div class="level-detail">
-                <div class="level-number">
-                    <h3>
-                        Level 1
-                    </h3>
-                    <p>
-                        5-7 years
-                    </p>
-    
-                </div>
-                 <h2>
-                    Foundation Level
-                </h2>
-                <p class="level-detail-p">Introduction to Jain Principles and basic Prayers</p>
-                <div class="img-detail">
-                    <img src="https://jpeg.org/images/jpeg-home.jpg" alt="">
-                    <p>Image of Level 1</p>
-                </div>
-                <div class="img-detail">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQKAOpO3uaqpXpZGD3C1yXx2Tq2lvzEA507A&s" alt="">
-                    <p>Image of Level 1</p>
-                </div>
-                <button class="level-button"> View Details</button>
-            </div>
-        </div>
-        <div class="level">
-            <div class="level-detail">
-                <div class="level-number">
-                    <h3>
-                        Level 1
-                    </h3>
-                    <p>
-                        5-7 years
-                    </p>
-    
-                </div>
-                 <h2>
-                    Foundation Level
-                </h2>
-                <p class="level-detail-p">Introduction to Jain Principles and basic Prayers</p>
-                <div class="img-detail">
-                    <img src="https://jpeg.org/images/jpeg-home.jpg" alt="">
-                    <p>Image of Level 1</p>
-                </div>
-                <div class="img-detail">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQKAOpO3uaqpXpZGD3C1yXx2Tq2lvzEA507A&s" alt="">
-                    <p>Image of Level 1</p>
-                </div>
-                <button class="level-button"> View Details</button>
-            </div>
-        </div>
+    <div class="level-section" id="levelSection">
+        <!-- Levels will be populated dynamically from Excel -->
     </div>
 
     <div class="more-detail-container">
@@ -253,7 +150,9 @@
       }
 
       const API_URL = "https://script.google.com/macros/s/AKfycbzHig3ZZ62dXVnOCVdsaibKGYZCHuUQ1PyFPGQXZopMf5r570_0_Ui22cuIm8K_QnPK/exec";
+      const LEVELS_API_URL = "https://script.google.com/macros/s/AKfycbwgIy-PxbC_ac-7IxIsaYvARWCK5H8m-2NyoDbLqM5C2_KKGq6q6mltFKibgO1NOtgZ/exec";
 
+      // Fetch navbar data
       fetch(API_URL)
         .then((response) => response.json())
         .then((data) => {
@@ -264,33 +163,69 @@
 
           const navLinks = document.getElementById("navLinks");
           navLinks.innerHTML = "";
-          ata.navbar.links.forEach((link) => {
-                if (link === "Pathshala") {
-                    navLinks.innerHTML += `
-                      <div class="dropdown">
-                        <a href="About-Pathshala.html">Pathshala &#9662;</a>
-                        <div class="dropdown-content">
-                          <a href="#">Junior Pathshala</a>
-                          <a href="#">Senior Pathshala</a>
-                        </div>
-                      </div>`;
-                } else if (link === "About") {
-                  navLinks.innerHTML += `
-                      <div class="dropdown">
-                        <a href="#">About &#9662;</a>
-                        <div class="dropdown-content">
-                          <a href="ec-bod.html">EC & BOD</a>
-                          <a href="jssd-policies.html">JSSD Policies</a>
-                        </div>
-                      </div>`;
-                } else {
-                  navLinks.innerHTML += `<a href="#">${link}</a>`;
-                }
-              });
+          data.navbar.links.forEach((link) => {
+            if (link.includes("Pathshala")) {
+              navLinks.innerHTML += `
+                <div class="dropdown">
+                  <a href="About-Pathshala.html">Pathshala &#9662;</a>
+                  <div class="dropdown-content">
+                    <a href="#">Junior Pathshala</a>
+                    <a href="#">Senior Pathshala</a>
+                  </div>
+                </div>`;
+            } else {
+              navLinks.innerHTML += `<a href="#">${link}</a>`;
+            }
+          });
 
         })
         .catch((error) => {
-          console.error("Error fetching data:", error);
+          console.error("Error fetching navbar data:", error);
+        });
+
+      // Fetch levels data separately
+      fetch(LEVELS_API_URL)
+        .then((response) => response.json())
+        .then((data) => {
+          // Populate Levels Section
+          const levelSection = document.getElementById("levelSection");
+          levelSection.innerHTML = "";
+          
+          if (data.levels && data.levels.length > 0) {
+            data.levels.forEach((level) => {
+              const levelHTML = `
+                <div class="level">
+                    <div class="level-detail">
+                        <div class="level-number">
+                            <h3>
+                                ${level.levelName || 'Level'}
+                            </h3>
+                            <p>
+                                ${level.ageRange || 'Age Range'}
+                            </p>
+                        </div>
+                         <h2>
+                            ${level.title || 'Level Title'}
+                        </h2>
+                        <p class="level-detail-p">${level.description || 'Level Description'}</p>
+                        <div class="img-detail">
+                            <img src="${level.image1 || 'https://jpeg.org/images/jpeg-home.jpg'}" alt="">
+                            <p>${level.image1Caption || 'Image of Level'}</p>
+                        </div>
+                        <div class="img-detail">
+                            <img src="${level.image2 || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQKAOpO3uaqpXpZGD3C1yXx2Tq2lvzEA507A&s'}" alt="">
+                            <p>${level.image2Caption || 'Image of Level'}</p>
+                        </div>
+                        <button class="level-button"> View Details</button>
+                    </div>
+                </div>`;
+              levelSection.innerHTML += levelHTML;
+            });
+          }
+
+        })
+        .catch((error) => {
+          console.error("Error fetching levels data:", error);
         });
     </script>
   </body>
