@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSSD San Diego</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div id="navbarContainer"></div>
+
+    <!-- Carousel Section -->
+    <div class="carousel-container"></div>
+
+    <!-- About Section -->
+    <section class="about-section">
+      <h2></h2>
+      <div class="about-content">
+        <div class="about-left">
+          <p></p>
+          <blockquote></blockquote>
+          <div class="stats"></div>
+        </div>
+        <div class="about-right">
+          <h3></h3>
+          <ul></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feedback Section -->
+    <section class="feedback-section">
+      <div class="feedback-left">
+        <h2 id="feedbackHeading"></h2>
+      </div>
+      <div class="feedback-right">
+        <form id="feedbackForm">
+          <input type="text" name="name" placeholder="Your Name*" required />
+          <input type="email" name="email" placeholder="Your Email*" required />
+          <select name="category" required>
+            <option value="">--Please choose an option--</option>
+            <option>Any</option>
+            <option>Religious</option>
+            <option>Cultural</option>
+            <option>Education</option>
+            <option>Facilities</option>
+            <option>Technology</option>
+            <option>Rental</option>
+            <option>Public Relation</option>
+            <option>Finance</option>
+            <option>Kitchen</option>
+            <option>Library</option>
+            <option>Other</option>
+          </select>
+          <textarea
+            name="message"
+            placeholder="Message"
+            rows="4"
+            required
+          ></textarea>
+          <button type="submit">Send</button>
+        </form>
+        <div id="formResponse"></div>
+      </div>
+    </section>
+
+    <div id="footerContainer"></div>
+
+    <script>
+      function loadHTML(id, file) {
+        fetch(file)
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById(id).innerHTML = data;
+          });
+      }
+
+      loadHTML("navbarContainer", "/navbar.html");
+      loadHTML("footerContainer", "/footer.html");
+    </script>
+
+    <script>
+      let slideIndex = 0;
+      let slides = [];
+
+      function showSlides() {
+        if (!slides.length) {
+          slides = document.getElementsByClassName("carousel-slide");
+        }
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) slideIndex = 1;
+        if (slides.length > 0) {
+          slides[slideIndex - 1].style.display = "block";
+        }
+        setTimeout(showSlides, 5000);
+      }
+
+      function changeSlide(n) {
+        slideIndex += n - 1;
+        if (slideIndex < 0) slideIndex = slides.length - 1;
+        if (slideIndex >= slides.length) slideIndex = 0;
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        if (slides.length > 0) {
+          slides[slideIndex].style.display = "block";
+        }
+      }
+
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbzHig3ZZ62dXVnOCVdsaibKGYZCHuUQ1PyFPGQXZopMf5r570_0_Ui22cuIm8K_QnPK/exec";
+
+      fetch(API_URL)
+        .then((response) => response.json())
+        .then((data) => {
+          // Navbar Rendering
+          const checkNavbar = setInterval(() => {
+            if (document.getElementById("navLinks")) {
+              clearInterval(checkNavbar);
+              document.querySelector(".logo-section img").src =
+                data.navbar.logo;
+              document.querySelector(".logo-title div:first-child").innerText =
+                data.navbar.title1;
+              document.querySelector(".logo-title div:last-child").innerText =
+                data.navbar.title2;
+              const navLinks = document.getElementById("navLinks");
+              navLinks.innerHTML = "";
+              data.navbar.links.forEach((link) => {
+                if (link === "Pathshala") {
+                    navLinks.innerHTML += `
+                      <div class="dropdown">
+                        <a href="About-Pathshala.html">Pathshala &#9662;</a>
+                        <div class="dropdown-content">
+                          <a href="#">Junior Pathshala</a>
+                          <a href="#">Senior Pathshala</a>
+                        </div>
+                      </div>`;
+                } else if (link === "About") {
+                  navLinks.innerHTML += `
+                      <div class="dropdown">
+                        <a href="#">About &#9662;</a>
+                        <div class="dropdown-content">
+                          <a href="ec-bod.html">EC & BOD</a>
+                          <a href="jssd-policies.html">JSSD Policies</a>
+                        </div>
+                      </div>`;
+                } else {
+                  navLinks.innerHTML += `<a href="#">${link}</a>`;
+                }
+              });
+            }
+          }, 100);
+
+          // Carousel
+          const carouselContainer = document.querySelector(
+            ".carousel-container"
+          );
+          carouselContainer.innerHTML = "";
+          data.carousel.forEach((slide, index) => {
+            carouselContainer.innerHTML += `
+              <div class="carousel-slide fade">
+                <img src="${slide.image}" alt="Slide ${index + 1}" />
+                <div class="carousel-text">
+                  <h1>${slide.heading}</h1>
+                  <p>${slide.text}</p>
+                </div>
+              </div>`;
+          });
+          carouselContainer.innerHTML += `
+            <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+            <a class="next" onclick="changeSlide(1)">&#10095;</a>`;
+
+          // About Section
+          document.querySelector(".about-section h2").innerText =
+            data.about.heading;
+          document.querySelector(".about-left p").innerText =
+            data.about.description;
+          const blockquote = document.querySelector(".about-left blockquote");
+          const [quoteText, quoteAuthor] = data.about.quote.split(" - ");
+          blockquote.innerHTML = `<em>"${quoteText}"</em> - <span>${quoteAuthor}</span>`;
+
+          const stats = document.querySelector(".stats");
+          stats.innerHTML = "";
+          data.about.stats.forEach((stat) => {
+            stats.innerHTML += `
+              <div class="stat-box">
+                <div class="stat-number">${stat.number}</div>
+                <div>${stat.label}</div>
+              </div>`;
+          });
+
+          document.querySelector(".about-right h3").innerText =
+            data.about.missionHeading;
+          const ul = document.querySelector(".about-right ul");
+          ul.innerHTML = "";
+          data.about.missionPoints.forEach((point) => {
+            ul.innerHTML += `<li>${point}</li>`;
+          });
+
+          // Feedback Section
+          document.getElementById("feedbackHeading").innerText =
+            data.feedback.heading;
+
+          // Footer Rendering
+          const checkFooter = setInterval(() => {
+            if (document.getElementById("footerLogo")) {
+              clearInterval(checkFooter);
+              document.getElementById("footerLogo").src = data.footer.logo;
+              document.getElementById("footerTitle").innerText =
+                data.footer.title;
+              const footerSocial = document.getElementById("footerSocial");
+              footerSocial.innerHTML = "";
+              data.footer.socialIcons.forEach((icon) => {
+                footerSocial.innerHTML += `<a href="#"><img src="${icon}" alt="Social Icon" /></a>`;
+              });
+              document.getElementById("footerNote").innerText =
+                data.footer.note;
+            }
+          }, 100);
+
+          showSlides();
+        });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .getElementById("feedbackForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+
+            fetch(
+              "https://script.google.com/macros/s/AKfycbwT8l5yxogr5Ywwu_dfsmzmYBjOiEGlvNdAzyZW_MdLWKYJbmZd14UIGrfr0bQCZtu0yQ/exec",
+              {
+                method: "POST",
+                body: formData,
+              }
+            )
+              .then((response) => response.json())
+              .then((result) => {
+                document.getElementById("formResponse").innerText =
+                  "Thank you for your feedback!";
+                form.reset();
+              })
+              .catch((error) => {
+                document.getElementById("formResponse").innerText =
+                  "Error! Please try again.";
+              });
+          });
+      });
+    </script>
+  </body>
+</html>

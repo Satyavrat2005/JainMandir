@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSSD San Diego</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="logo-section">
+        <img src="/public/Jain_Mandir.png" alt="Logo" />
+        <div class="logo-title">
+          <div>JSSD</div>
+          <div>Jain Society of San Diego</div>
+        </div>
+      </div>
+
+      <div class="hamburger" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#">About</a>
+        <div class="dropdown">
+          <a href="#">Pathshala &#9662;</a>
+          <div class="dropdown-content">
+            <a href="#">Junior Pathshala</a>
+            <a href="#">Senior Pathshala</a>
+          </div>
+        </div>
+        <a href="#">Contribute</a>
+        <a href="#">Events</a>
+        <a href="#">Gallery</a>
+        <a href="#">Membership Registration</a>
+        <a href="#">Feedback</a>
+        <a href="#">Jinalay Project</a>
+      </div>
+    </nav>
+
+    <!-- Carousel Section -->
+    <div class="carousel-container">
+      <div class="carousel-slide fade">
+        <img src="/public/home_1.jpg" alt="Slide 1" />
+        <div class="carousel-text">
+          <h1>Welcome to JSSD</h1>
+          <p>Practicing, Promoting, and Preserving Jain Values</p>
+        </div>
+      </div>
+
+      <div class="carousel-slide fade">
+        <img
+          src="https://jssd.org/wp-content/uploads/2025/01/home_3.jpg"
+          alt="Slide 2"
+        />
+        <div class="carousel-text">
+          <h1>Welcome to JSSD</h1>
+          <p>Practicing, Promoting, and Preserving Jain Values</p>
+        </div>
+      </div>
+
+      <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+      <a class="next" onclick="changeSlide(1)">&#10095;</a>
+    </div>
+
+    <!-- About Section -->
+    <section class="about-section">
+      <h2>About JSSD</h2>
+      <div class="about-content">
+        <div class="about-left">
+          <p>
+            The Jain Society of San Diego is a 501(c)(3) non-profit religious
+            organization to pursue a goal of practicing, promoting, and
+            preserving the Jain religion. It is governed by a constitution and
+            managed by a Trustee Committee and an Executive Committee consisting
+            of President, Vice President, Secretary, Treasurer, who are elected
+            by the Jain Center members for a term of two years.
+          </p>
+          <blockquote>
+            <em>"Ahimsa paramo dharma"</em> -
+            <span>Non-violence is the highest dharma</span>
+          </blockquote>
+          <div class="stats">
+            <div class="stat-box">
+              <div class="stat-number">500+</div>
+              <div>Community Members</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">25+</div>
+              <div>Years of Service</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-right">
+          <h3>Our Mission</h3>
+          <ul>
+            <li>Practice and promote Jain principles in daily life</li>
+            <li>Preserve Jain culture and traditions for future generations</li>
+            <li>Foster community unity and spiritual growth</li>
+            <li>Educate youth through our Pathshala program</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="feedback-section">
+      <div class="feedback-left">
+        <h2>Get in touch for any questions or leave us a feedback</h2>
+      </div>
+      <div class="feedback-right">
+        <form id="feedbackForm">
+          <input type="text" name="name" placeholder="Your Name*" required />
+          <input type="email" name="email" placeholder="Your Email*" required />
+          <select name="category" required>
+            <option value="">--Please choose an option--</option>
+            <option>Any</option>
+            <option>Religious</option>
+            <option>Cultural</option>
+            <option>Education</option>
+            <option>Facilities</option>
+            <option>Technology</option>
+            <option>Rental</option>
+            <option>Public Relation</option>
+            <option>Finance</option>
+            <option>Kitchen</option>
+            <option>Library</option>
+            <option>Other</option>
+          </select>
+          <textarea
+            name="message"
+            placeholder="Message"
+            rows="4"
+            required
+          ></textarea>
+          <button type="submit">Send</button>
+        </form>
+        <div id="formResponse"></div>
+      </div>
+    </section>
+
+    <footer class="footer-section">
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img src="/public/Jain_Mandir.png" alt="JSSD Logo" />
+      <h3>JSSD</h3>
+    </div>
+    <div class="footer-social">
+      <a href="#"><img src="/public/icons/email.png" alt="Email" /></a>
+      <a href="#"><img src="/public/icons/youtube.png" alt="YouTube" /></a>
+      <a href="#"><img src="/public/icons/whatsapp.png" alt="WhatsApp" /></a>
+      <a href="#"><img src="/public/icons/facebook.png" alt="Facebook" /></a>
+      <a href="#"><img src="/public/icons/instagram.png" alt="Instagram" /></a>
+      <a href="#"><img src="/public/icons/linkedin.png" alt="LinkedIn" /></a>
+    </div>
+    <div class="footer-note">
+      © JSSD 2024. We love our community!
+    </div>
+  </div>
+</footer>
+
+
+    <script>
+      document
+  .getElementById("feedbackForm")
+  .addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    fetch('https://script.google.com/macros/s/AKfycbwT8l5yxogr5Ywwu_dfsmzmYBjOiEGlvNdAzyZW_MdLWKYJbmZd14UIGrfr0bQCZtu0yQ/exec', {
+      method: 'POST',
+      body: formData
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        document.getElementById("formResponse").innerText = "Thank you for your feedback!";
+        form.reset();
+      })
+      .catch((error) => {
+        document.getElementById("formResponse").innerText = "Error! Please try again.";
+      });
+  });
+
+      function toggleMenu() {
+        document.getElementById("navLinks").classList.toggle("show");
+      }
+
+      let slideIndex = 0;
+      const slides = document.getElementsByClassName("carousel-slide");
+
+      function showSlides() {
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) slideIndex = 1;
+        slides[slideIndex - 1].style.display = "block";
+        setTimeout(showSlides, 5000); // Change image every 5 seconds
+      }
+
+      function changeSlide(n) {
+        slideIndex += n - 1;
+        if (slideIndex < 0) slideIndex = slides.length - 1;
+        if (slideIndex >= slides.length) slideIndex = 0;
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        slides[slideIndex].style.display = "block";
+      }
+
+      showSlides();
+    </script>
+  </body>
+</html>
